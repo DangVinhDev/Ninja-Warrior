@@ -14,7 +14,7 @@ public class Mushroom_Health : MonoBehaviour, IDamageable
     public UnityEvent OnDeath;
 
     [Header("Score Settings")]
-    public int scoreOnDeath = 100;
+    public int scoreOnDeath = 1;
 
     [Header("Floating Text")]
     public Vector3 floatingOffset = new Vector3(0f, 0.6f, 0f); // vị trí lệch khi spawn chữ
@@ -62,11 +62,11 @@ public class Mushroom_Health : MonoBehaviour, IDamageable
         if (anim != null) anim.SetTrigger("die");
         if (enemyPatrol != null) Destroy(enemyPatrol);
 
-        // Cộng điểm vs hiện floating text
+        // Cộng điểm vs hiện floating text UI
         if (ScoreManager.Instance != null)
         {
             ScoreManager.Instance.AddScore(scoreOnDeath);
-            ScoreManager.Instance.SpawnFloatingScore(transform.position + floatingOffset, scoreOnDeath, Color.yellow);
+            ScoreManager.Instance.SpawnFloatingScoreUI(transform.position + floatingOffset, scoreOnDeath, Color.yellow);
         }
 
         Destroy(gameObject, 0.1f);
