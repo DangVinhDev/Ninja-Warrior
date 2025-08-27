@@ -10,8 +10,14 @@ public class Mushroom_Health : MonoBehaviour, IDamageable
 
     public HealthBar healthBar;
     private Animator anim;
-    private EnemyPatrol enemyPatrol; // Đổi từ Mushroom_Patrol sang EnemyPatrol
+    private EnemyPatrol enemyPatrol;
     public UnityEvent OnDeath;
+
+    [Header("Score Settings")]
+    public int scoreOnDeath = 100;
+
+    [Header("Floating Text")]
+    public Vector3 floatingOffset = new Vector3(0f, 0.6f, 0f); // vị trí lệch khi spawn chữ
 
     private void OnEnable()
     {
@@ -29,11 +35,8 @@ public class Mushroom_Health : MonoBehaviour, IDamageable
         anim = GetComponent<Animator>();
         enemyPatrol = GetComponent<EnemyPatrol>();
 
-        // Cập nhật thanh máu nếu có
         if (healthBar != null)
-        {
             healthBar.UpdateBar(currentHealth, maxHealth, "HP");
-        }
     }
 
     public void TakeDamage(int damage)
@@ -47,33 +50,25 @@ public class Mushroom_Health : MonoBehaviour, IDamageable
         }
         else
         {
-            if (anim != null)
-            {
-                anim.SetTrigger("takehit"); // Kích hoạt animation bị đánh
-            }
+            if (anim != null) anim.SetTrigger("takehit");
         }
 
-        // Cập nhật thanh máu nếu có
         if (healthBar != null)
-        {
             healthBar.UpdateBar(currentHealth, maxHealth, "HP");
-        }
     }
 
     private void Death()
     {
-        if (anim != null)
+        if (anim != null) anim.SetTrigger("die");
+        if (enemyPatrol != null) Destroy(enemyPatrol);
+
+        // Cộng điểm vs hiện floating text
+        if (ScoreManager.Instance != null)
         {
-            anim.SetTrigger("die"); // Kích hoạt animation chết
+            ScoreManager.Instance.AddScore(scoreOnDeath);
+            ScoreManager.Instance.SpawnFloatingScore(transform.position + floatingOffset, scoreOnDeath, Color.yellow);
         }
 
-        // Vô hiệu hóa EnemyPatrol
-        if (enemyPatrol != null)
-        {
-            Destroy(enemyPatrol);
-        }
-
-        // Thêm logic để xử lý khi quái vật chết, ví dụ: hủy đối tượng sau một thời gian
-        Destroy(gameObject, 0.5f); // Hủy đối tượng sau 0.5 giây
+        Destroy(gameObject, 0.1f);
     }
 }
