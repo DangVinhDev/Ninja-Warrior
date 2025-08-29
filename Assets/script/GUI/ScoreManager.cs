@@ -24,7 +24,7 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(int amount)
     {
         currentScore += amount;
-        if (scoreText != null) scoreText.text = "Score: " + currentScore;
+        scoreText.text = "Quái đã hạ: " + currentScore;
     }
 
     // Spawn floating UI theo vị trí world

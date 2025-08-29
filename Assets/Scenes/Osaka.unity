@@ -75054,7 +75054,7 @@ MonoBehaviour:
   OnDeath:
     m_PersistentCalls:
       m_Calls: []
-  scoreOnDeath: 100
+  scoreOnDeath: 1
   floatingOffset: {x: 0, y: 0.6, z: 0}
 --- !u!114 &1982390716
 MonoBehaviour:
